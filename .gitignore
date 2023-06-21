@@ -33,3 +33,5 @@
 
 # Misc
 *.jfm
+/.vs/CMessageBox
+/x64/Debug
