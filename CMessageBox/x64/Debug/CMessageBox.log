@@ -1,0 +1,6 @@
+﻿  CMessageBox.cpp
+D:\Projekte\CMessageBox\CMessageBox\CMessageBox.cpp(14,6): warning C4200: nonstandard extension used: zero-sized array in struct/union
+D:\Projekte\CMessageBox\CMessageBox\CMessageBox.cpp(14,6): message : This member will be ignored by a defaulted constructor or copy/move assignment operator
+D:\Projekte\CMessageBox\CMessageBox\CMessageBox.cpp(89,46): warning C4267: '=': conversion from 'size_t' to 'UINT', possible loss of data
+D:\Projekte\CMessageBox\CMessageBox\CMessageBox.cpp(91,50): warning C4267: '=': conversion from 'size_t' to 'UINT', possible loss of data
+  CMessageBox.vcxproj -> D:\Projekte\CMessageBox\x64\Debug\CMessageBox.lib
