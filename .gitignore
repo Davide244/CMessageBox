@@ -35,3 +35,8 @@
 *.jfm
 /.vs/CMessageBox
 /x64/Debug
+/CMessageBox/Release
+/CMessageBox/x64/Release
+/.vs
+/Release
+/x64/Release
