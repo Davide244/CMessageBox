@@ -37,8 +37,6 @@ HRESULT __stdcall Callback(HWND hwnd,
 HRESULT CMessageBox::TDMessageBox(
 	HWND hwnd,
 	HINSTANCE hInstance,
-	PCWSTR text,
-	PCWSTR title,
 	TDMessageBoxProperties properties,
 	int* PressedButton,
 	BOOL* VerificationChecked,
@@ -50,9 +48,10 @@ HRESULT CMessageBox::TDMessageBox(
 	tdmbInfo.hInstance = hInstance;
 	tdmbInfo.hwndParent = hwnd;
 
-	tdmbInfo.pszWindowTitle = title;
-	tdmbInfo.pszContent = text;
+	tdmbInfo.pszWindowTitle = properties.title;
+	tdmbInfo.pszContent = properties.text;
 	if (properties.instructionText != NULL)			tdmbInfo.pszMainInstruction = properties.instructionText;
+	if (properties.footerText != NULL)				tdmbInfo.pszFooter = properties.footerText;
 	if (properties.verificationText != NULL)		tdmbInfo.pszVerificationText = properties.verificationText;
 	if (properties.expandedInfoText != NULL)		tdmbInfo.pszExpandedInformation = properties.expandedInfoText;
 
@@ -64,30 +63,26 @@ HRESULT CMessageBox::TDMessageBox(
 	tdmbInfo.pfCallback = Callback;
 	tdmbInfo.lpCallbackData = (LONG_PTR)&properties.LNKAdminButtonIDs;
 
-
 	// Set Icons
-	if (std::holds_alternative<HICON>(properties.mainIcon))
+	tdmbInfo.dwFlags |= TDF_USE_HICON_MAIN;
+	tdmbInfo.hMainIcon = properties.mainIcon_HICON;
+	/*if (properties.mainIcon_HICON != (HICON)NULL)
 	{
 		tdmbInfo.dwFlags |= TDF_USE_HICON_MAIN;
-		tdmbInfo.hMainIcon = std::get<HICON>(properties.mainIcon);
+		tdmbInfo.hMainIcon = properties.mainIcon_HICON;
 	}
-	else if (std::holds_alternative<PCWSTR>(properties.mainIcon)) {
-		tdmbInfo.dwFlags |= TDF_USE_HICON_MAIN;
-		tdmbInfo.pszMainIcon = std::get<PCWSTR>(properties.mainIcon);
-	}
+	else
+		tdmbInfo.pszMainIcon = properties.mainIcon_PCWSTR;*/
 
-
-	if (std::holds_alternative<HICON>(properties.footerIcon))
+	if (properties.footerIcon_HICON != (HICON)NULL)
 	{
 		tdmbInfo.dwFlags |= TDF_USE_HICON_FOOTER;
-		tdmbInfo.hFooterIcon = std::get<HICON>(properties.footerIcon);
+		tdmbInfo.hFooterIcon = properties.footerIcon_HICON;
 	}
-	else if (std::holds_alternative<PCWSTR>(properties.footerIcon)) {
-		tdmbInfo.dwFlags |= TDF_USE_HICON_FOOTER;
-		tdmbInfo.pszFooterIcon = std::get<PCWSTR>(properties.footerIcon);
-	}
+	else
+		tdmbInfo.pszFooterIcon = properties.footerIcon_PCWSTR;
 
-
+	// Common buttons.
 	tdmbInfo.dwCommonButtons = properties.commonButtons;
 	tdmbInfo.dwFlags = properties.TDFlags | TDF_ENABLE_HYPERLINKS;
 	if (~properties.defaultButton < 0) tdmbInfo.nDefaultButton = properties.defaultButton;

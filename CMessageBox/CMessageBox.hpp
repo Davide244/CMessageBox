@@ -10,7 +10,6 @@
 
 #pragma once
 
-#include <variant>
 #include <vector>
 #include <Windows.h>
 #include <CommCtrl.h>
@@ -19,17 +18,23 @@
 #define CMB_PCWSTR_TYPE 0
 #define CMB_HICON_TYPE 1
 
-class CMessageBox
+namespace CMessageBox
 {
 	struct TDMessageBoxProperties 
 	{
+		PCWSTR title;
+		PCWSTR text;
 		PCWSTR instructionText;
 		PCWSTR footerText;
 		PCWSTR expandedInfoText;
 		PCWSTR verificationText;
-		_TASKDIALOG_FLAGS TDFlags;
-		std::variant<HICON, PCWSTR> mainIcon = (PCWSTR)NULL;
-		std::variant<HICON, PCWSTR> footerIcon = (PCWSTR)NULL;
+		int TDFlags;
+
+		PCWSTR mainIcon_PCWSTR = (PCWSTR)NULL;
+		HICON mainIcon_HICON = (HICON)NULL;
+		PCWSTR footerIcon_PCWSTR = (PCWSTR)NULL;
+		HICON footerIcon_HICON = (HICON)NULL;
+
 		_TASKDIALOG_COMMON_BUTTON_FLAGS commonButtons = (_TASKDIALOG_COMMON_BUTTON_FLAGS)0;
 		std::vector<_TASKDIALOG_BUTTON> customButtons = {};
 		int defaultButton = -1;
@@ -37,13 +42,10 @@ class CMessageBox
 		std::vector<_TASKDIALOG_BUTTON> radioButtons = {};
 	};
 
-public:
 	// Create a messagebox using TaskDialogIndirect. This is a wrapper for the TaskDialogIndirect function.
-	static HRESULT TDMessageBox(
+	HRESULT TDMessageBox(
 		HWND hwnd,
 		HINSTANCE hInstance,
-		PCWSTR text,
-		PCWSTR title,
 		TDMessageBoxProperties properties,
 		int* PressedButton,
 		BOOL* VerificationChecked = NULL,
