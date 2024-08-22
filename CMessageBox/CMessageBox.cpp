@@ -64,15 +64,13 @@ HRESULT CMessageBox::TDMessageBox(
 	tdmbInfo.lpCallbackData = (LONG_PTR)&properties.LNKAdminButtonIDs;
 
 	// Set Icons
-	tdmbInfo.dwFlags |= TDF_USE_HICON_MAIN;
-	tdmbInfo.hMainIcon = properties.mainIcon_HICON;
-	/*if (properties.mainIcon_HICON != (HICON)NULL)
+	if (properties.mainIcon_HICON != (HICON)NULL)
 	{
 		tdmbInfo.dwFlags |= TDF_USE_HICON_MAIN;
 		tdmbInfo.hMainIcon = properties.mainIcon_HICON;
 	}
 	else
-		tdmbInfo.pszMainIcon = properties.mainIcon_PCWSTR;*/
+		tdmbInfo.pszMainIcon = properties.mainIcon_PCWSTR;
 
 	if (properties.footerIcon_HICON != (HICON)NULL)
 	{
