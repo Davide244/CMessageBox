@@ -8,13 +8,6 @@
 #include <winnt.h>
 #include <shellapi.h>
 
-// Make a union for MainIcon_opt and FooterIcon_opt so we can use both HICON and PCWSTR
-
-union TDCallbackDataCombined {
-	int AdminBtns[];
-
-};
-
 HRESULT __stdcall Callback(HWND hwnd,
 	UINT uNotification,
 	WPARAM wParam,
@@ -23,24 +16,13 @@ HRESULT __stdcall Callback(HWND hwnd,
 {
 	std::vector<int>* LNKAdminButtonIDs;
 
-	//std::wstring debug = L"DATA: " + data;
-	//OutputDebugString(debug.c_str());
-	//MessageBox(NULL, debug.c_str(), L"Debug", MB_OK);
-
 	switch (uNotification)
 	{
 	case TDN_CREATED:
 		// Sets admin icon for buttons
 		LNKAdminButtonIDs = (std::vector<int>*)data;
 		for (int i = 0; i < LNKAdminButtonIDs->size(); i++)
-		{
 			SendMessage(hwnd, TDM_SET_BUTTON_ELEVATION_REQUIRED_STATE, (*LNKAdminButtonIDs)[i], TRUE);
-			#ifdef _DEBUG
-			// output to debug console
-			std::wstring debug = L"Button ID: " + std::to_wstring((*LNKAdminButtonIDs)[i]);
-			OutputDebugString(debug.c_str());
-			#endif
-		}
 
 		break;
 	case TDN_HYPERLINK_CLICKED:
@@ -55,24 +37,12 @@ HRESULT __stdcall Callback(HWND hwnd,
 HRESULT CMessageBox::TDMessageBox(
 	HWND hwnd,
 	HINSTANCE hInstance,
-	_TASKDIALOG_FLAGS mbFlags,
-	int* PressedButton,
 	PCWSTR text,
 	PCWSTR title,
-	PCWSTR Instructiontxt_opt,
-	PCWSTR FooterText_opt,
-	PCWSTR VerificationText_opt,
+	TDMessageBoxProperties properties,
+	int* PressedButton,
 	BOOL* VerificationChecked,
-	PCWSTR ExpandedInformation_opt,
-	std::variant<HICON, PCWSTR> MainIcon_opt,
-	std::variant<HICON, PCWSTR> FooterIcon_opt,
-	_TASKDIALOG_COMMON_BUTTON_FLAGS CommonButtons_opt,
-	std::vector<_TASKDIALOG_BUTTON> CustomButtons_opt,
-	int DefaultButton,
-	std::vector<int> LNKAdminButtonIDs,
-	std::vector<_TASKDIALOG_BUTTON> radioButtons_opt,
-	int* PressedRadioButton
-)
+	int* PressedRadioButton)
 {
 	HRESULT hRes;
 	TASKDIALOGCONFIG tdmbInfo = { sizeof(TASKDIALOGCONFIG) };
@@ -82,50 +52,48 @@ HRESULT CMessageBox::TDMessageBox(
 
 	tdmbInfo.pszWindowTitle = title;
 	tdmbInfo.pszContent = text;
-	if (Instructiontxt_opt != NULL)			tdmbInfo.pszMainInstruction = Instructiontxt_opt;
-	if (FooterText_opt != NULL)				tdmbInfo.pszFooter = FooterText_opt;
-	if (VerificationText_opt != NULL)		tdmbInfo.pszVerificationText = VerificationText_opt;
-	if (ExpandedInformation_opt != NULL)	tdmbInfo.pszExpandedInformation = ExpandedInformation_opt;
+	if (properties.instructionText != NULL)			tdmbInfo.pszMainInstruction = properties.instructionText;
+	if (properties.verificationText != NULL)		tdmbInfo.pszVerificationText = properties.verificationText;
+	if (properties.expandedInfoText != NULL)		tdmbInfo.pszExpandedInformation = properties.expandedInfoText;
 
-	tdmbInfo.pButtons = CustomButtons_opt.data();
-	tdmbInfo.cButtons = CustomButtons_opt.size();
-	tdmbInfo.pRadioButtons = radioButtons_opt.data();
-	tdmbInfo.cRadioButtons = radioButtons_opt.size();
+	tdmbInfo.pButtons = properties.customButtons.data();
+	tdmbInfo.cButtons = properties.customButtons.size();
+	tdmbInfo.pRadioButtons = properties.radioButtons.data();
+	tdmbInfo.cRadioButtons = properties.radioButtons.size();
 
 	tdmbInfo.pfCallback = Callback;
-	tdmbInfo.lpCallbackData = (LONG_PTR)&LNKAdminButtonIDs;
+	tdmbInfo.lpCallbackData = (LONG_PTR)&properties.LNKAdminButtonIDs;
 
 
 	// Set Icons
-	if (std::holds_alternative<HICON>(MainIcon_opt))
+	if (std::holds_alternative<HICON>(properties.mainIcon))
 	{
 		tdmbInfo.dwFlags |= TDF_USE_HICON_MAIN;
-		tdmbInfo.hMainIcon = std::get<HICON>(MainIcon_opt);
+		tdmbInfo.hMainIcon = std::get<HICON>(properties.mainIcon);
 	}
-	else if (std::holds_alternative<PCWSTR>(MainIcon_opt)) {
+	else if (std::holds_alternative<PCWSTR>(properties.mainIcon)) {
 		tdmbInfo.dwFlags |= TDF_USE_HICON_MAIN;
-		tdmbInfo.pszMainIcon = std::get<PCWSTR>(MainIcon_opt);
+		tdmbInfo.pszMainIcon = std::get<PCWSTR>(properties.mainIcon);
 	}
 
 
-	if (std::holds_alternative<HICON>(FooterIcon_opt))
+	if (std::holds_alternative<HICON>(properties.footerIcon))
 	{
 		tdmbInfo.dwFlags |= TDF_USE_HICON_FOOTER;
-		tdmbInfo.hFooterIcon = std::get<HICON>(FooterIcon_opt);
+		tdmbInfo.hFooterIcon = std::get<HICON>(properties.footerIcon);
 	}
-	else if (std::holds_alternative<PCWSTR>(FooterIcon_opt)) {
+	else if (std::holds_alternative<PCWSTR>(properties.footerIcon)) {
 		tdmbInfo.dwFlags |= TDF_USE_HICON_FOOTER;
-		tdmbInfo.pszFooterIcon = std::get<PCWSTR>(FooterIcon_opt);
+		tdmbInfo.pszFooterIcon = std::get<PCWSTR>(properties.footerIcon);
 	}
 
 
-	tdmbInfo.dwCommonButtons = CommonButtons_opt;
-	tdmbInfo.dwFlags = mbFlags | TDF_ENABLE_HYPERLINKS;
-	if (~DefaultButton < 0) tdmbInfo.nDefaultButton = DefaultButton;
+	tdmbInfo.dwCommonButtons = properties.commonButtons;
+	tdmbInfo.dwFlags = properties.TDFlags | TDF_ENABLE_HYPERLINKS;
+	if (~properties.defaultButton < 0) tdmbInfo.nDefaultButton = properties.defaultButton;
 
 	hRes = TaskDialogIndirect(&tdmbInfo, PressedButton, PressedRadioButton, VerificationChecked);
 
 	return hRes;
-
 }
 
