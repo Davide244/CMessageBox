@@ -5,6 +5,6 @@ CMessageBox is a wrapper around TaskDialogIndirect() which aims to make it's fea
 ## Requirements
 - C++17 and above
 - Windows Vista and above
-- Windows SDK (SDK version 10.0.18362.0 and above are recommended)
+- Windows SDK (SDK version 10.0.19041.0 and above are recommended)
 
 Information on the usage of this library can be found under the **wiki** tab.
