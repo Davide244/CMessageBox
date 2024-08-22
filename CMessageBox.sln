@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CMessageBox", "CMessageBox\CMessageBox.vcxproj", "{0A79DA15-0C1F-4627-BD15-A4EB8097A284}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CMSGBOXExample", "CMSGBOXExample\CMSGBOXExample.vcxproj", "{B2A55B64-C419-4B7A-98A2-8967949E334D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{0A79DA15-0C1F-4627-BD15-A4EB8097A284}.Release|x64.Build.0 = Release|x64
 		{0A79DA15-0C1F-4627-BD15-A4EB8097A284}.Release|x86.ActiveCfg = Release|Win32
 		{0A79DA15-0C1F-4627-BD15-A4EB8097A284}.Release|x86.Build.0 = Release|Win32
+		{B2A55B64-C419-4B7A-98A2-8967949E334D}.Debug|x64.ActiveCfg = Debug|x64
+		{B2A55B64-C419-4B7A-98A2-8967949E334D}.Debug|x64.Build.0 = Debug|x64
+		{B2A55B64-C419-4B7A-98A2-8967949E334D}.Debug|x86.ActiveCfg = Debug|Win32
+		{B2A55B64-C419-4B7A-98A2-8967949E334D}.Debug|x86.Build.0 = Debug|Win32
+		{B2A55B64-C419-4B7A-98A2-8967949E334D}.Release|x64.ActiveCfg = Release|x64
+		{B2A55B64-C419-4B7A-98A2-8967949E334D}.Release|x64.Build.0 = Release|x64
+		{B2A55B64-C419-4B7A-98A2-8967949E334D}.Release|x86.ActiveCfg = Release|Win32
+		{B2A55B64-C419-4B7A-98A2-8967949E334D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

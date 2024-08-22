@@ -40,3 +40,5 @@
 /.vs
 /Release
 /x64/Release
+/CMSGBOXExample/Release
+/CMSGBOXExample/x64/Release
