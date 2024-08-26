@@ -1,4 +1,4 @@
-![](https://img.shields.io/badge/Current%20Release-2.0-green) ![](https://img.shields.io/badge/License-MIT-yellow)
+![](https://img.shields.io/badge/Current%20Release-2.0-green) ![](https://img.shields.io/badge/License-MIT-yellow) ![](https://img.shields.io/github/commits-since/Davide244/CMessageBox/latest)
 # CMessageBox <img src="https://github.com/Davide244/CMessageBox/raw/d62befc8fd5747ee37f0aa6fef22fe6084485171/ReadmeIconNew.png" width="40" height="40" style="margin-bottom: -10px;">
 CMessageBox is a wrapper around TaskDialogIndirect() which aims to make it's features accesible with one function.
 
