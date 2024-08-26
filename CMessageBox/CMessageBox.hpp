@@ -20,6 +20,9 @@
 
 namespace CMessageBox
 {
+	/// <summary>
+	/// Struct containing information for the TDMessageBox function.
+	/// </summary>
 	struct TDMessageBoxProperties 
 	{
 		PCWSTR title;
@@ -42,7 +45,16 @@ namespace CMessageBox
 		std::vector<_TASKDIALOG_BUTTON> radioButtons = {};
 	};
 
-	// Create a messagebox using TaskDialogIndirect. This is a wrapper for the TaskDialogIndirect function.
+    /// <summary>
+    /// Creates a TaskDialogIndirect message box dialog with custom properties.
+    /// </summary>
+    /// <param name="hwnd">- The parent window's HWND. Set to NULL (or 0) to not parent to any window.</param>
+    /// <param name="hInstance">- The handle to the application instance. This is required for custom icons.</param>
+    /// <param name="properties">- The <see cref="CMessageBox::TDMessageBoxProperties"/> struct.</param>
+    /// <param name="PressedButton">- A pointer to an integer that will receive the ID of the button that was pressed by the user.</param>
+    /// <param name="VerificationChecked">- A pointer to a BOOL that will receive the state of the verification checkbox.</param>
+    /// <param name="PressedRadioButton">- A pointer to an integer that will receive the ID of the radio button that was pressed by the user.</param>
+    /// <returns>Returns an HRESULT indicating success or failure.</returns>
 	HRESULT TDMessageBox(
 		HWND hwnd,
 		HINSTANCE hInstance,
