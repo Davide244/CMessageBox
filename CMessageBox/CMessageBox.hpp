@@ -1,6 +1,6 @@
 //---------------------- CMessageBox -----------------------\\
 //															\\
-//	       Created by: David Simon Jonjic					\\
+//	       Created by: D244									\\
 //	       Date: 22.08.2024									\\
 //	       Version: 2.0										\\
 //	       License: MIT										\\
